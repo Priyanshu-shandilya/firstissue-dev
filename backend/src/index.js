@@ -14,7 +14,9 @@ const subscribeRouter = require('./routes/subscribe');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+/* =========================
+   Middleware
+========================= */
 app.use(
   cors({
     origin: [
@@ -28,10 +30,16 @@ app.use(
 
 app.use(express.json());
 
-// Routes
-app.use('/api/issues', issuesRouter);
-app.use('/api/subscribe', subscribeRouter);
+/* =========================
+   Routes
+========================= */
 
+// Home Route
+app.get('/', (req, res) => {
+  res.send('🚀 FirstIssue Dev Backend is running!');
+});
+
+// Health Check Route
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -39,7 +47,13 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// MongoDB Connection
+// API Routes
+app.use('/api/issues', issuesRouter);
+app.use('/api/subscribe', subscribeRouter);
+
+/* =========================
+   MongoDB Connection
+========================= */
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
