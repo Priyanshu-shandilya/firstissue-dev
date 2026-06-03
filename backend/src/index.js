@@ -12,12 +12,9 @@ const PORT = process.env.PORT || 5000;
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 // ─── Middleware ───────────────────────────────────────────────────────────────
-app.use(
-  cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
-    credentials: true,
-  })
-);
+git add backend/vercel.json backend/src/index.js
+git commit -m "configure backend for vercel"
+git push
 
 app.use(express.json());
 
