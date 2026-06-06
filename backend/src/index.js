@@ -54,17 +54,18 @@ app.use('/api/subscribe', subscribeRouter);
 /* =========================
    MongoDB Connection
 ========================= */
+
+console.log('MONGO_URI =', process.env.MONGO_URI);
+
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
 
-    // Start Express Server
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
 
-    // Start Cron Job
     startCronJob();
   })
   .catch((err) => {
