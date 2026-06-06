@@ -17,13 +17,23 @@ const PORT = process.env.PORT || 5000;
 /* =========================
    Middleware
 ========================= */
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://firstissue-dev-7yq2.vercel.app',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:5174',
-      process.env.FRONTEND_URL,
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
@@ -34,12 +44,10 @@ app.use(express.json());
    Routes
 ========================= */
 
-// Home Route
 app.get('/', (req, res) => {
   res.send('🚀 FirstIssue Dev Backend is running!');
 });
 
-// Health Check Route
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -47,15 +55,12 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
 app.use('/api/issues', issuesRouter);
 app.use('/api/subscribe', subscribeRouter);
 
 /* =========================
    MongoDB Connection
 ========================= */
-
-console.log('MONGO_URI =', process.env.MONGO_URI);
 
 mongoose
   .connect(process.env.MONGO_URI)
