@@ -21,6 +21,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'http://192.168.29.219:5173',
   'https://firstissue-dev-7yq2.vercel.app',
   process.env.FRONTEND_URL,
 ].filter(Boolean);
@@ -62,8 +63,21 @@ app.use('/api/subscribe', subscribeRouter);
    MongoDB Connection
 ========================= */
 
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error(
+    '❌ MONGODB_URI is not set. Add it to your .env file (see .env.example).'
+  );
+  process.exit(1);
+}
+
+mongoose.set('strictQuery', true);
+
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(MONGODB_URI, {
+    serverSelectionTimeoutMS: 10000,
+  })
   .then(() => {
     console.log('✅ MongoDB connected');
 
@@ -75,6 +89,16 @@ mongoose
   })
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err.message);
+    process.exit(1);
   });
+
+// Log connection issues that happen after the initial connect
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB runtime error:', err.message);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.warn('⚠️  MongoDB disconnected');
+});
 
 module.exports = app;

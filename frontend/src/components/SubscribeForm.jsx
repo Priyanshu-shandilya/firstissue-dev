@@ -45,18 +45,18 @@ export default function SubscribeForm() {
   const minsUntil = Math.floor(((nextRun - now) % 3600000) / 60000)
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 mt-8">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-5 mt-8 transition-colors duration-500">
       <div className="flex items-center gap-2 mb-1">
         <span className="text-xl">📬</span>
-        <h2 className="font-semibold text-gray-900">Email Digest Subscription</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-white">Email Digest Subscription</h2>
       </div>
-      <p className="text-sm text-gray-500 mb-4">
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
         Get a curated digest straight to your inbox. Powered by a cron job that fetches
         fresh issues from GitHub every 24 hours automatically.
       </p>
 
       {/* Topic toggles */}
-      <p className="text-xs font-medium text-gray-600 mb-2">Filter by language / topic</p>
+      <p className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-2">Filter by language / topic</p>
       <div className="flex gap-2 flex-wrap mb-4">
         {TOPICS.map((topic) => (
           <button
@@ -66,7 +66,7 @@ export default function SubscribeForm() {
             className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
               selectedTopics.includes(topic)
                 ? 'bg-brand text-white border-brand'
-                : 'bg-gray-50 text-gray-600 border-gray-200 hover:border-gray-400'
+                : 'bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
             }`}
           >
             {topic}
@@ -82,12 +82,12 @@ export default function SubscribeForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="flex-1 min-w-[200px] text-sm px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
+          className="flex-1 min-w-[200px] text-sm px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
         />
         <select
           value={frequency}
           onChange={(e) => setFrequency(e.target.value)}
-          className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand"
+          className="text-sm px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand"
         >
           <option value="daily">Daily digest</option>
           <option value="weekly">Weekly digest</option>
@@ -103,18 +103,18 @@ export default function SubscribeForm() {
 
       {/* Status message */}
       {status === 'success' && (
-        <div className="text-sm text-brand bg-brand-light border border-green-200 rounded-lg px-3 py-2 mb-3">
+        <div className="text-sm text-brand dark:text-green-400 bg-brand-light dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg px-3 py-2 mb-3">
           ✅ {message}
         </div>
       )}
       {status === 'error' && (
-        <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3">
+        <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2 mb-3">
           ⚠️ {message}
         </div>
       )}
 
       {/* Cron info */}
-      <div className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-lg px-3 py-2">
+      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-lg px-3 py-2">
         <span>🔄</span>
         <span>
           GitHub API polled every <strong>24 hours</strong> via cron job — your digest is always
